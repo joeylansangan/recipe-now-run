@@ -126,10 +126,12 @@ export default function Home() {
         not decoration. Pass 1: this replaced a mint band that carried only a
         wordmark and a tagline and then ate 250px on every screen forever.
       */}
-      <header className="bg-mint px-4 pb-5 pt-7">
-        <div className="flex items-center gap-2.5 px-1">
-          <Mark className="h-[26px] w-[26px] shrink-0 text-vinyl" />
-          <h1 className="menu text-[1.4rem]">Recipe Now</h1>
+      <header className="bg-mint px-4 pb-5 pt-8">
+        <div className="px-1">
+          <h1 className="menu text-[2.1rem]">Recipe Now</h1>
+          <p className="mt-1.5 text-[0.9375rem] leading-snug text-ink-soft">
+            Type a dish. Get the recipe and the videos.
+          </p>
         </div>
 
         <form
@@ -141,10 +143,8 @@ export default function Home() {
         >
           <div className="chrome-edge flex items-center gap-2 rounded-full bg-card p-1.5">
             <input
-              /* Placeholder keeps the slab voice and the big size, but drops
-                 to medium weight — at 700 it read as a value already typed. */
-              className="menu min-w-0 flex-1 bg-transparent px-4 py-2 text-[1.2rem] outline-none placeholder:font-medium placeholder:text-ink-faint"
-              placeholder="What are you cooking?"
+              className="min-w-0 flex-1 bg-transparent px-4 py-2 text-[1.0625rem] outline-none placeholder:text-ink-faint"
+              placeholder="Try chicken adobo"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               aria-label="Dish"
@@ -152,17 +152,11 @@ export default function Home() {
             <button
               /* disabled text is ink-soft, not ink-faint: WCAG exempts
                  inactive controls, but 3.19:1 is unreadable at arm's length. */
-              /* min-w pins the pill so it doesn't resize when the label swaps
-                 for the loader — the button was visibly jumping on submit. */
-              className="label flex min-w-[104px] shrink-0 items-center justify-center rounded-full bg-vinyl px-5 py-3 text-white disabled:bg-chrome disabled:text-ink-soft"
+              className="label shrink-0 rounded-full bg-vinyl px-5 py-3 text-white disabled:bg-chrome disabled:text-ink-soft"
               disabled={loading || !query.trim()}
               type="submit"
             >
-              {loading ? (
-                <SunriseLoader id="btn" compact className="h-6 w-6" />
-              ) : (
-                "Search"
-              )}
+              {loading ? "…" : "Search"}
             </button>
           </div>
         </form>
@@ -206,12 +200,7 @@ export default function Home() {
 
             {loading && (
               <Card>
-                <div className="py-2">
-                  <SunriseLoader id="recipe" className="h-10 w-40" />
-                  <p className="menu mt-3 text-[1.2rem]">
-                    Getting the recipe…
-                  </p>
-                </div>
+                <p className="label text-ink-soft">Getting the recipe…</p>
               </Card>
             )}
 
@@ -323,12 +312,7 @@ export default function Home() {
                     </p>
                   )}
                   {!videoError && videos.length === 0 && (
-                    <div className="mt-3">
-                      <SunriseLoader id="videos" className="h-7 w-28" />
-                      <p className="mt-1.5 text-[1.0625rem] text-ink-soft">
-                        Loading videos…
-                      </p>
-                    </div>
+                    <p className="label mt-3 text-ink-soft">Loading videos…</p>
                   )}
                   <ul className="mt-2">
                     {videos.map((video) => (
@@ -454,107 +438,6 @@ export default function Home() {
   );
 }
 
-/**
- * The mark: a gold sun resting on a horizon line. From ASSET_SPEC.md, with
- * the palette reconciled to this app — the spec's navy horizon becomes our
- * ink, and its azure sky ribbon becomes the mint wall we already have.
- * Same composition as the installed PWA icon, at square proportions.
- */
-function Mark({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" className={className}>
-      <circle cx="16" cy="15" r="6" fill="var(--color-gold)" />
-      <line
-        x1="3"
-        y1="21.5"
-        x2="29"
-        y2="21.5"
-        stroke="var(--color-ink)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-/**
- * The sun at rest on a hairline horizon — the empty-state motif.
- * Wider proportions than the icon, per the spec's icon-vs-in-app difference:
- * hairline at 25% ink, square ends, sun proportionally larger.
- */
-function HorizonSun({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 160 40" aria-hidden="true" className={className}>
-      <circle cx="80" cy="26" r="10" fill="var(--color-gold)" />
-      <line
-        x1="0"
-        y1="36"
-        x2="160"
-        y2="36"
-        stroke="var(--color-ink)"
-        strokeOpacity="0.25"
-        strokeWidth="1.5"
-      />
-    </svg>
-  );
-}
-
-/**
- * The sun climbs and the horizon masks the rise. A calm beat, not a spinner.
- * Reduced motion collapses it to the risen state, which still reads correctly —
- * and every use is paired with words regardless.
- */
-function SunriseLoader({
-  className = "",
-  id,
-  compact = false,
-}: {
-  className?: string;
-  id: string;
-  /** Square proportions for tight spots like the submit button. */
-  compact?: boolean;
-}) {
-  const clip = `above-horizon-${id}`;
-  const w = compact ? 32 : 160;
-  const cx = compact ? 16 : 80;
-  const r = compact ? 6 : 10;
-  const cy = compact ? 15 : 26;
-  const y = compact ? 21 : 36;
-  const inset = compact ? 3 : 0;
-  return (
-    <svg
-      viewBox={`0 0 ${w} ${y + 4}`}
-      aria-hidden="true"
-      className={className}
-    >
-      <defs>
-        <clipPath id={clip}>
-          <rect x="0" y="0" width={w} height={y} />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#${clip})`}>
-        <circle
-          cx={cx}
-          cy={cy}
-          r={r}
-          fill="var(--color-gold)"
-          className="animate-sunup"
-        />
-      </g>
-      <line
-        x1={inset}
-        y1={y}
-        x2={w - inset}
-        y2={y}
-        stroke="var(--color-ink)"
-        strokeOpacity={compact ? 0.55 : 0.25}
-        strokeWidth={compact ? 2 : 1.5}
-        strokeLinecap={compact ? "round" : "butt"}
-      />
-    </svg>
-  );
-}
-
 function Card({
   children,
   className = "",
@@ -596,10 +479,12 @@ function Empty({ children }: { children: React.ReactNode }) {
   // read from, and states its invitation in the menu voice.
   return (
     <div className="chrome-edge rounded-[var(--radius-card)] bg-card px-6 py-9">
-      {/* The sun at rest — the empty state is the one screen calm enough to
-          carry the motif, and the spec allows it exactly once per state. */}
-      <HorizonSun className="h-10 w-40" />
-      <p className="menu mt-4 text-[1.45rem] leading-tight">{children}</p>
+      {/* Pass 2: the diamond sat ~24px above the text and read as a stray
+          dot. Tied to the line it belongs to. */}
+      <p className="menu text-[1.45rem] leading-tight">
+        <span className="mr-2.5 inline-block h-2.5 w-2.5 rotate-45 bg-vinyl align-[0.15em]" />
+        {children}
+      </p>
     </div>
   );
 }

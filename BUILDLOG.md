@@ -371,6 +371,33 @@ Line breaks in the ledger are rendered as `<br>`; wording is untouched.
           compact square variant and pinned the button with min-w so the pill holds
           its shape whichever state it's in.
 [08:57] — Build passes. Shots in design-pass/shots/pass-6/.
+[09:00] — Joey: "it does not match. go back to the very first pass 3 before I asked to
+          add a minimal logo and loading icon. that is the original claude result
+          anyway." REVERTED app/ and public/ to commit 456dd39 exactly.
+          Three logo attempts rejected in a row — plate, checker, sun. All three
+          were requested changes, and none of them survived. Recording that plainly:
+          the design that shipped is the one from the three refinement passes, with
+          no logo mark at all.
+[09:01] — Reverting the header also removed the "What are you cooking?" placeholder
+          and the smaller wordmark, because those arrived in the SAME request as the
+          logo. Back to "Try chicken adobo" and the 2.1rem wordmark with its tagline.
+          Flagging it because Joey asked for those two things separately and may still
+          want them — they were not what he rejected.
+[09:02] — Did not just claim the revert — PROVED it. Re-shot all 15 states as
+          shots/restored/ and byte-compared against shots/pass-3/: 13 of 15 are
+          BYTE-IDENTICAL. The 2 that differ (07-recipe-videos, 11-videos-error) are
+          the two states containing network-loaded YouTube thumbnails; opened
+          07 and confirmed the design is identical, only thumbnail decode/scroll
+          position varies. `git diff 456dd39 -- app public` is empty. 📹
+[09:03] — Kept shots/pass-4, pass-5, pass-6 on disk rather than deleting them. They're
+          the record of three rejected directions — deleting them would tidy the mess
+          out of the truth record, and the mess is the truth.
+[09:04] — Build passes, TypeScript clean.
+[09:04] — KNOWN DEFECT reintroduced by the revert, stated rather than hidden:
+          app/favicon.ico is once again the unregenerated Next.js starter favicon.
+          The sun-mark round had replaced it with a real one. It is a browser-tab
+          icon only — it does not affect the app or the PWA install — but it is
+          wrong, and the ASSET_SPEC round is the only thing that ever fixed it.
 ```
 
 ### What was deliberately NOT adopted from ASSET_SPEC.md

@@ -18,11 +18,6 @@
   --color-vinyl: #b3202b;
   --color-chrome: #cfd2d6;
   --color-chrome-dark: #a8adb3;
-  /* The sun. From ASSET_SPEC's "Printed Menu" gold — the yellow accent.
-     It appears ONCE per screen and only ever as the mark, never as a
-     surface: red and yellow at equal weight is the fast-food trap the
-     brief rules out. Red stays the action colour; gold is the sun. */
-  --color-gold: #e9a820;
 
   --font-display: var(--font-zilla);
   --font-sans: var(--font-karla);
@@ -61,28 +56,6 @@ body {
   box-shadow:
     inset 0 1px 0 #ffffff,
     0 1px 0 rgba(33, 26, 21, 0.06);
-}
-
-/*
-  The sun rises over 55% of the cycle, then holds. A calm beat, not a spinner.
-  Under reduced motion the global rule below collapses this to its end state —
-  which is the sun already risen, i.e. a correct still image rather than a
-  frozen half-frame.
-*/
-@keyframes sunup {
-  0% {
-    transform: translateY(58%);
-  }
-  55% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-.animate-sunup {
-  animation: sunup 2s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
