@@ -205,6 +205,41 @@ Line breaks in the ledger are rendered as `<br>`; wording is untouched.
           fast-food chain and drifts toward someone's trade dress.
 [07:57] — BEFORE screenshot still NOT captured. The brief makes it the design agent's
           first action, with chicken adobo as the fixed demo dish for every later shot.
+[07:59] — DESIGN PASS STARTED. Agent now working from design-pass/BRIEF.md.
+[08:00] — Needed real screenshots of 15 states, repeatedly, across two interpretations
+          and three refinement passes. Installed Playwright + headless Chromium (94.7 MB)
+          rather than eyeballing it — the brief requires LOOKING at each shot, which
+          means the shots have to exist as files. 📹
+[08:02] — Made one real /api/recipe + /api/videos call, saved both responses to
+          design-pass/fixtures/, and had the harness replay them. Every shot is real
+          captured content, deterministic across passes, and costs nothing to re-shoot.
+          Token cost of the whole design pass: ONE recipe call. 📹
+[08:05] — BEFORE captured: 15 states at 390px. Killed the Next.js dev badge first
+          (next.config devIndicators:false) — it was sitting in the corner of every frame.
+          Re-shot after. Committed the before set so it can't be lost.
+[08:06] — Looked at the before shots. Honest state of it: black on white, stock Geist,
+          default Tailwind, bulleted lists, one black button. Nothing there was a
+          decision — it was a default, which is exactly why it's a fair "before".
+[08:10] — Interpretation A on branch design/a — "ROADSIDE SIGN". The interface behaves
+          like signage: stacked display wordmark, hard edges (zero radius), one red used
+          sparingly as an event colour, big red step numerals, generous white. Archivo
+          (SIL OFL). Light-only on purpose.
+[08:12] — Interpretation B on branch design/b — "DINER COUNTER". The app as a physical
+          object: mint wall band with a chrome trim line, chrome-edged rounded cards on
+          cream, vinyl red, slab-serif menu voice, red circular step numbers, a
+          serves/prep/cook stat strip. Zilla Slab + Karla (both SIL OFL).
+[08:11] — Contrast fix made DURING design, not after: the "faint" grey token came out at
+          3.1:1 on paper. Darkened to #767068 (4.89:1) before shipping the shots.
+          Legibility outranks mood — that's the brief's precedence chain, applied.
+[08:13] — Caught the harness lying: my thumbnail stub rendered as bright cyan blocks, so
+          the video list looked broken in B's shots. It was the fixture, not the design.
+          Removed the stub and let real YouTube thumbnails load (image CDN, no API quota),
+          then re-shot BOTH interpretations so the comparison is honest. 📹
+          This is why the brief says look at the images — reading the code would never
+          have surfaced it.
+[08:14] — STOPPED for the human pick, as the brief requires. Both shot sets consolidated
+          on main: design-pass/shots/design-a and design-pass/shots/design-b.
+          Reject-both is available and carries no penalty.
 ```
 
 ---

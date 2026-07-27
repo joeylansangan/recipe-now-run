@@ -79,17 +79,8 @@ async function routes(page, opts = {}) {
     return route.fulfill({ json: videosPayload });
   });
 
-  // Thumbnails: 1x1 grey pixel so shots don't depend on the network.
-  await page.route("https://i.ytimg.com/**", (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: "image/png",
-      body: Buffer.from(
-        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==",
-        "base64",
-      ),
-    }),
-  );
+  // Thumbnails load for real from YouTube's image CDN — no API quota is
+  // spent, and stubbing them would make the video list impossible to judge.
 }
 
 const shots = [];
@@ -172,7 +163,9 @@ console.log(`shooting → ${OUT}`);
   await shot(page, "07-recipe-videos");
   await page.mouse.wheel(0, -20000);
   await page.waitForTimeout(300);
-  await page.locator("button", { hasText: /Favorite/ }).first().click();
+  // Contract for both interpretations: the favourite toggle is the only
+  // control carrying aria-pressed, so this survives any restyle.
+  await page.locator("button[aria-pressed]").first().click();
   await page.waitForTimeout(300);
   await shot(page, "08-favorited");
   await shot(page, "09-recipe-fullpage", { full: true });
