@@ -126,12 +126,10 @@ export default function Home() {
         not decoration. Pass 1: this replaced a mint band that carried only a
         wordmark and a tagline and then ate 250px on every screen forever.
       */}
-      <header className="bg-mint px-4 pb-5 pt-8">
-        <div className="px-1">
-          <h1 className="menu text-[2.1rem]">Recipe Now</h1>
-          <p className="mt-1.5 text-[0.9375rem] leading-snug text-ink-soft">
-            Type a dish. Get the recipe and the videos.
-          </p>
+      <header className="bg-mint px-4 pb-5 pt-7">
+        <div className="flex items-center gap-2.5 px-1">
+          <Mark className="h-[26px] w-[26px] shrink-0 text-vinyl" />
+          <h1 className="menu text-[1.4rem]">Recipe Now</h1>
         </div>
 
         <form
@@ -143,8 +141,10 @@ export default function Home() {
         >
           <div className="chrome-edge flex items-center gap-2 rounded-full bg-card p-1.5">
             <input
-              className="min-w-0 flex-1 bg-transparent px-4 py-2 text-[1.0625rem] outline-none placeholder:text-ink-faint"
-              placeholder="Try chicken adobo"
+              /* Placeholder keeps the slab voice and the big size, but drops
+                 to medium weight — at 700 it read as a value already typed. */
+              className="menu min-w-0 flex-1 bg-transparent px-4 py-2 text-[1.2rem] outline-none placeholder:font-medium placeholder:text-ink-faint"
+              placeholder="What are you cooking?"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               aria-label="Dish"
@@ -156,7 +156,13 @@ export default function Home() {
               disabled={loading || !query.trim()}
               type="submit"
             >
-              {loading ? "…" : "Search"}
+              {loading ? (
+                /* Explicit ink: the button is disabled while loading, and the
+                   inherited muted colour turned the spinner into a smudge. */
+                <Spinner className="h-[17px] w-[17px] text-ink" />
+              ) : (
+                "Search"
+              )}
             </button>
           </div>
         </form>
@@ -200,7 +206,10 @@ export default function Home() {
 
             {loading && (
               <Card>
-                <p className="label text-ink-soft">Getting the recipe…</p>
+                <div className="flex items-center gap-3 py-2">
+                  <Spinner className="h-7 w-7 shrink-0 text-vinyl" />
+                  <p className="menu text-[1.2rem]">Getting the recipe…</p>
+                </div>
               </Card>
             )}
 
@@ -312,7 +321,12 @@ export default function Home() {
                     </p>
                   )}
                   {!videoError && videos.length === 0 && (
-                    <p className="label mt-3 text-ink-soft">Loading videos…</p>
+                    <div className="mt-3 flex items-center gap-2.5">
+                      <Spinner className="h-5 w-5 shrink-0 text-vinyl" />
+                      <p className="text-[1.0625rem] text-ink-soft">
+                        Loading videos…
+                      </p>
+                    </div>
                   )}
                   <ul className="mt-2">
                     {videos.map((video) => (
@@ -435,6 +449,60 @@ export default function Home() {
         )}
       </main>
     </div>
+  );
+}
+
+/**
+ * The mark: a plate seen from above — outer ring, centre well.
+ * Deliberately the same shape as the installed PWA icon, so the icon on the
+ * home screen and the logo in the app read as one thing.
+ */
+function Mark({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" className={className}>
+      <circle
+        cx="16"
+        cy="16"
+        r="13.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+      />
+      <circle cx="16" cy="16" r="5" fill="currentColor" />
+    </svg>
+  );
+}
+
+/**
+ * The same plate, with one arc sweeping the rim. Under prefers-reduced-motion
+ * the spin is suppressed globally, which is why every use of this is paired
+ * with words — the mark is never the only thing saying "working".
+ */
+function Spinner({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 32 32"
+      aria-hidden="true"
+      className={`animate-spin ${className}`}
+    >
+      <circle
+        cx="16"
+        cy="16"
+        r="13.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeOpacity="0.35"
+      />
+      <path
+        d="M29.5 16A13.5 13.5 0 0 0 16 2.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <circle cx="16" cy="16" r="5" fill="currentColor" />
+    </svg>
   );
 }
 

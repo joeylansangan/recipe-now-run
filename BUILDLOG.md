@@ -287,6 +287,29 @@ Line breaks in the ledger are rendered as `<br>`; wording is untouched.
           version manually. Port 3000 free, working tree clean, everything committed
           on main. Same caveat as before: token counts now print in HIS terminal, so
           Phase 5 stays stuck at 2 measured uses until those lines come back.
+[08:31] — Joey asked for three design enhancements: big "What are you cooking?" in
+          place of the placeholder, a minimal logo beside a smaller app name, and a
+          loading icon matching the logo.
+[08:32] — Tried to start my own dev server and it FAILED — port 3000 was taken by
+          Joey's own manual-test server (PID 49475). Did NOT kill it. Worked against
+          his running server instead, since it serves this same directory. 📹
+[08:33] — Broke Joey's live app for about a minute: I edited the header to use a <Mark>
+          component before the component existed, and his hot-reloading server started
+          returning 500. Finished the component and it recovered. Real cost of two
+          people on one dev server — worth knowing before doing it on camera. 📹
+[08:35] — Built the mark as ONE shape used three ways: outer ring + centre well, a
+          plate seen from above. It's the logo, it's the spinner (same ring, one arc
+          sweeping), and it's already the shape of the installed PWA icon — so the
+          home-screen icon and the in-app logo are deliberately the same object.
+          App name dropped from 2.1rem to 1.4rem so the mark leads, not the words.
+          Every spinner is paired with words, because the global reduced-motion rule
+          freezes animation — the mark must never be the only thing saying "working".
+[08:37] — Looked at pass-4 shots and caught two of my own defects:
+            · 03-loading: the spinner inside the disabled Search pill inherited the
+              muted disabled colour and read as a grey smudge. Forced it to ink.
+            · 01-idle: "What are you cooking?" at slab-700 read as a value already
+              typed. Dropped the placeholder to medium weight, kept the big size.
+[08:38] — Build passes. Shots in design-pass/shots/pass-4/.
 ```
 
 ### Design pass — fonts and rights
