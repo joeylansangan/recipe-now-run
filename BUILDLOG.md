@@ -168,6 +168,43 @@ Line breaks in the ledger are rendered as `<br>`; wording is untouched.
           Consequence worth noting: token counts now print in Joey's terminal, not
           anywhere the agent can read. Phase 5 stalls at 2 measured uses unless those
           `[recipe] ... in= out=` lines get pasted back.
+[05:03–
+ 07:41] — GAP. ~2h38m of wall clock with no build work happening. Recording it because
+          "total honest minutes" must not silently absorb it. Build time ≠ elapsed time;
+          Phase 1 needs both numbers stated separately or the title is a lie.
+[07:41] — design-pass/PROMPT.md added by Joey — a brief-generator process for the design
+          pass. The agent's job here is to WRITE the brief, not to design the app.
+[07:47–
+ 07:49] — Four reference images added.
+[07:53] — Filing fix: references were dropped in design-pass/ but PROMPT.md specifies
+          design-pass/references/. Created the folder and moved all four. Did not rename
+          or edit them. Not a stumble — a location mismatch with obvious intent.
+[07:54] — Opened all four references. They are one coherent set: American mid-century
+          roadside/diner culture shot in hard sun. (1) Red neon-era vertical cafe sign,
+          white stucco, palms, deep blue sky. (2) Low-angle chrome + lacquer-red classic
+          car under palms. (3) Diner interior — red vinyl booths, mint-green wall,
+          tabletop jukeboxes, chrome-edged formica. (4) Flat-lit plate of diner food
+          (burger, fries, onion rings, fried eggs, ketchup) on red gingham, yellow wall.
+[07:55] — Confirmed the four inferred/derived facts with Joey (feature list, state list,
+          usage moment, stakes) in one pass. He said yes, no corrections.
+[07:57] — Wrote design-pass/BRIEF.md. The brief, not the design — this step aims a second
+          agent, it doesn't style anything. Lineage named as movements only (Googie,
+          Streamline Moderne, Kodachrome-era advertising, Precisionism), never a living
+          designer or a current product, because a person's name in a repo file turns a
+          style question into a copying question.
+[07:57] — Two things the brief locks that came out of reading the actual code, not the
+          references:
+            · The app has NO offline state — there's no service worker. Told the design
+              agent not to design a screen the app can't reach.
+            · Load-bearing constraint recorded as: ingredients and current step must be
+              readable at arm's length from a propped phone, in a bright kitchen, by
+              someone whose hands are busy. Everything else in the design loses to that.
+[07:57] — Called out three failure modes specific to THESE references: the fifties-diner
+          costume, the nostalgia/sepia filter (the references are brilliant and sunlit —
+          aging them kills them), and red+yellow at equal weight, which reads as a
+          fast-food chain and drifts toward someone's trade dress.
+[07:57] — BEFORE screenshot still NOT captured. The brief makes it the design agent's
+          first action, with chicken adobo as the fixed demo dish for every later shot.
 ```
 
 ---
