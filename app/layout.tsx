@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   title: "Recipe Now",
   description: "Type a dish. Get the recipe and the videos.",
   appleWebApp: { capable: true, title: "Recipe Now", statusBarStyle: "default" },
+  icons: { apple: "/apple-icon.png" },
 };
 
 export const viewport: Viewport = {

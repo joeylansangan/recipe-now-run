@@ -330,7 +330,58 @@ Line breaks in the ledger are rendered as `<br>`; wording is untouched.
           currentColor, so inside the red loading card it rendered all-red and lost the
           logo's two-tone. Pinned to ink so the loader always matches the mark.
 [08:42] — Build passes. Shots in design-pass/shots/pass-5/.
+[08:47] — Joey rejected the checker too, and added design-pass/ASSET_SPEC.md — a
+          complete measured spec for a DIFFERENT mark: "a gold sun resting on a navy
+          horizon line, on warm paper, under a thin azure sky ribbon", from a system
+          called The Printed Menu. Said: "i want that (adjust colors as necessary but
+          this is where the yellow accent can come from)".
+[08:48] — Judgment call, stated rather than assumed: took the MARK, the LOADER and the
+          ICON SYSTEM plus the gold accent — NOT the whole Printed Menu re-theme
+          (navy ink, azure, Instrument Serif / Hanken Grotesk / IBM Plex Mono, 4px
+          print radii, paper theme colour). Adopting all of that would throw away the
+          Diner Counter direction Joey picked at 08:16 and the three refinement passes
+          on top of it. The narrow reading is reversible; the wide one isn't.
+[08:49] — Palette reconciled per "adjust colors as necessary":
+            · spec navy horizon  → our ink
+            · spec azure sky ribbon → our mint (the app ALREADY has a mint wall band
+              at the top edge, so the icon's ribbon and the app's wall are the same
+              thing — this is why the two now rhyme)
+            · spec paper → our cream
+            · gold #e9a820 kept exactly as specified. It is the yellow accent.
+[08:49] — Guardrail written into the token: gold appears ONCE per screen and ONLY as
+          the mark, never as a surface. Red and yellow at equal weight is the
+          "ketchup-and-mustard / fast-food trade dress" dead-end from BRIEF.md. Red
+          stays the action colour; gold is the sun. 📹
+[08:50] — Loader is now the spec's SunriseLoader: the sun climbs and the horizon masks
+          the rise via a clipPath, 55% of the cycle then holds. A calm beat, not a
+          spinner. Under reduced motion the global rule collapses it to the RISEN
+          state — a correct still image rather than a frozen half-frame.
+[08:52] — The spec's file inventory exposed a real gap in this repo, and the spec even
+          names it: our app/favicon.ico was STILL unregenerated Next.js boilerplate,
+          and we had no maskable icon and no apple-icon. Extended the hand-written
+          PNG encoder to emit the full family: icon-192, icon-512,
+          icon-512-maskable (ribbon dropped — a platform mask would crop it to a
+          smear), apple-icon 180, and a real favicon.ico at 16/32/48. 📹
+[08:53] — STUMBLE: the favicon crashed the app. Next.js's ICO decoder rejected my
+          embedded PNGs with "The PNG is not in RGBA format!" — I'd written them as
+          RGB. Added an alpha channel for ICO entries only. Joey's live server went
+          500 again in the meantime.
+[08:56] — Caught by looking at pass-6: the wide sunrise loader inside the Search pill
+          stretched the button to ~200px, so it visibly JUMPED size on submit. Added a
+          compact square variant and pinned the button with min-w so the pill holds
+          its shape whichever state it's in.
+[08:57] — Build passes. Shots in design-pass/shots/pass-6/.
 ```
+
+### What was deliberately NOT adopted from ASSET_SPEC.md
+
+The spec describes a whole design system ("The Printed Menu"). Only the mark, the loader,
+the icon family and the gold accent were taken. Left alone on purpose: navy `#1b2a47`
+ink, azure `#1a5fb8`, vermilion `#c43d1b`, Instrument Serif / Hanken Grotesk / IBM Plex
+Mono, the 3–4px print radii, the mono-caps header lockup, and `#faf6ec` as theme colour.
+Those would replace the Diner Counter direction picked at 08:16 rather than extend it.
+**If Joey wants the full Printed Menu re-theme, that is a separate, larger pass — and it
+should be a deliberate decision, not a side effect of a logo change.**
 
 ### Design pass — fonts and rights
 

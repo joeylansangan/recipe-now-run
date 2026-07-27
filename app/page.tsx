@@ -152,14 +152,14 @@ export default function Home() {
             <button
               /* disabled text is ink-soft, not ink-faint: WCAG exempts
                  inactive controls, but 3.19:1 is unreadable at arm's length. */
-              className="label shrink-0 rounded-full bg-vinyl px-5 py-3 text-white disabled:bg-chrome disabled:text-ink-soft"
+              /* min-w pins the pill so it doesn't resize when the label swaps
+                 for the loader — the button was visibly jumping on submit. */
+              className="label flex min-w-[104px] shrink-0 items-center justify-center rounded-full bg-vinyl px-5 py-3 text-white disabled:bg-chrome disabled:text-ink-soft"
               disabled={loading || !query.trim()}
               type="submit"
             >
               {loading ? (
-                /* Explicit ink: the button is disabled while loading, and the
-                   inherited muted colour turned the spinner into a smudge. */
-                <Spinner className="h-[17px] w-[17px] text-ink" />
+                <SunriseLoader id="btn" compact className="h-6 w-6" />
               ) : (
                 "Search"
               )}
@@ -206,9 +206,11 @@ export default function Home() {
 
             {loading && (
               <Card>
-                <div className="flex items-center gap-3 py-2">
-                  <Spinner className="h-7 w-7 shrink-0 text-vinyl" />
-                  <p className="menu text-[1.2rem]">Getting the recipe…</p>
+                <div className="py-2">
+                  <SunriseLoader id="recipe" className="h-10 w-40" />
+                  <p className="menu mt-3 text-[1.2rem]">
+                    Getting the recipe…
+                  </p>
                 </div>
               </Card>
             )}
@@ -321,9 +323,9 @@ export default function Home() {
                     </p>
                   )}
                   {!videoError && videos.length === 0 && (
-                    <div className="mt-3 flex items-center gap-2.5">
-                      <Spinner className="h-5 w-5 shrink-0 text-vinyl" />
-                      <p className="text-[1.0625rem] text-ink-soft">
+                    <div className="mt-3">
+                      <SunriseLoader id="videos" className="h-7 w-28" />
+                      <p className="mt-1.5 text-[1.0625rem] text-ink-soft">
                         Loading videos…
                       </p>
                     </div>
@@ -453,55 +455,102 @@ export default function Home() {
 }
 
 /**
- * The mark: a four-square checker.
- * Not the diner-floor checkerboard (a named dead-end in the brief) — this is
- * the checkered emblem painted on the stucco wall in reference 1, kept to four
- * squares so it stays a mark rather than a pattern. Same shape as the
- * installed PWA icon, so home screen and app read as one object.
+ * The mark: a gold sun resting on a horizon line. From ASSET_SPEC.md, with
+ * the palette reconciled to this app — the spec's navy horizon becomes our
+ * ink, and its azure sky ribbon becomes the mint wall we already have.
+ * Same composition as the installed PWA icon, at square proportions.
  */
 function Mark({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" aria-hidden="true" className={className}>
-      <rect x="0" y="0" width="15" height="15" rx="1.5" fill="var(--color-vinyl)" />
-      <rect x="17" y="0" width="15" height="15" rx="1.5" fill="var(--color-ink)" />
-      <rect x="0" y="17" width="15" height="15" rx="1.5" fill="var(--color-ink)" />
-      <rect x="17" y="17" width="15" height="15" rx="1.5" fill="var(--color-vinyl)" />
+      <circle cx="16" cy="15" r="6" fill="var(--color-gold)" />
+      <line
+        x1="3"
+        y1="21.5"
+        x2="29"
+        y2="21.5"
+        stroke="var(--color-ink)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
 
 /**
- * The same four squares, turning. Under prefers-reduced-motion the spin is
- * suppressed globally, which is why every use of this is paired with words —
- * the mark is never the only thing saying "working".
+ * The sun at rest on a hairline horizon — the empty-state motif.
+ * Wider proportions than the icon, per the spec's icon-vs-in-app difference:
+ * hairline at 25% ink, square ends, sun proportionally larger.
  */
-function Spinner({ className = "" }: { className?: string }) {
+function HorizonSun({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 160 40" aria-hidden="true" className={className}>
+      <circle cx="80" cy="26" r="10" fill="var(--color-gold)" />
+      <line
+        x1="0"
+        y1="36"
+        x2="160"
+        y2="36"
+        stroke="var(--color-ink)"
+        strokeOpacity="0.25"
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+}
+
+/**
+ * The sun climbs and the horizon masks the rise. A calm beat, not a spinner.
+ * Reduced motion collapses it to the risen state, which still reads correctly —
+ * and every use is paired with words regardless.
+ */
+function SunriseLoader({
+  className = "",
+  id,
+  compact = false,
+}: {
+  className?: string;
+  id: string;
+  /** Square proportions for tight spots like the submit button. */
+  compact?: boolean;
+}) {
+  const clip = `above-horizon-${id}`;
+  const w = compact ? 32 : 160;
+  const cx = compact ? 16 : 80;
+  const r = compact ? 6 : 10;
+  const cy = compact ? 15 : 26;
+  const y = compact ? 21 : 36;
+  const inset = compact ? 3 : 0;
   return (
     <svg
-      viewBox="0 0 32 32"
+      viewBox={`0 0 ${w} ${y + 4}`}
       aria-hidden="true"
-      className={`animate-spin ${className}`}
+      className={className}
     >
-      <rect x="0" y="0" width="15" height="15" rx="1.5" fill="var(--color-vinyl)" />
-      <rect
-        x="17"
-        y="0"
-        width="15"
-        height="15"
-        rx="1.5"
-        fill="var(--color-ink)"
-        fillOpacity="0.3"
+      <defs>
+        <clipPath id={clip}>
+          <rect x="0" y="0" width={w} height={y} />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${clip})`}>
+        <circle
+          cx={cx}
+          cy={cy}
+          r={r}
+          fill="var(--color-gold)"
+          className="animate-sunup"
+        />
+      </g>
+      <line
+        x1={inset}
+        y1={y}
+        x2={w - inset}
+        y2={y}
+        stroke="var(--color-ink)"
+        strokeOpacity={compact ? 0.55 : 0.25}
+        strokeWidth={compact ? 2 : 1.5}
+        strokeLinecap={compact ? "round" : "butt"}
       />
-      <rect
-        x="0"
-        y="17"
-        width="15"
-        height="15"
-        rx="1.5"
-        fill="var(--color-ink)"
-        fillOpacity="0.3"
-      />
-      <rect x="17" y="17" width="15" height="15" rx="1.5" fill="var(--color-vinyl)" />
     </svg>
   );
 }
@@ -547,12 +596,10 @@ function Empty({ children }: { children: React.ReactNode }) {
   // read from, and states its invitation in the menu voice.
   return (
     <div className="chrome-edge rounded-[var(--radius-card)] bg-card px-6 py-9">
-      {/* Pass 2: the diamond sat ~24px above the text and read as a stray
-          dot. Tied to the line it belongs to. */}
-      <p className="menu text-[1.45rem] leading-tight">
-        <span className="mr-2.5 inline-block h-2.5 w-2.5 rotate-45 bg-vinyl align-[0.15em]" />
-        {children}
-      </p>
+      {/* The sun at rest — the empty state is the one screen calm enough to
+          carry the motif, and the spec allows it exactly once per state. */}
+      <HorizonSun className="h-10 w-40" />
+      <p className="menu mt-4 text-[1.45rem] leading-tight">{children}</p>
     </div>
   );
 }
