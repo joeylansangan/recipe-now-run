@@ -29,19 +29,16 @@ function chunk(type, data) {
 
 function png(size) {
   const raw = Buffer.alloc(size * (size * 3 + 1));
-  const c = (size - 1) / 2;
-  // Plate: an outer ring and a filled centre — reads as a plate at 48px.
-  const outer = size * 0.36;
-  const inner = size * 0.3;
-  const dot = size * 0.16;
+  const half = size / 2;
 
   for (let y = 0; y < size; y++) {
     const row = y * (size * 3 + 1);
     raw[row] = 0; // filter byte
     for (let x = 0; x < size; x++) {
-      const d = Math.hypot(x - c, y - c);
-      const on = (d <= outer && d >= inner) || d <= dot;
-      const [r, g, b] = on ? FG : BG;
+      // Four-square checker, diagonal pairs sharing a colour. Full bleed so it
+      // still reads at 48px on a home screen, and matches the in-app logo.
+      const diag = x < half === y < half;
+      const [r, g, b] = diag ? BG : FG;
       const i = row + 1 + x * 3;
       raw[i] = r;
       raw[i + 1] = g;

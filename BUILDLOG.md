@@ -310,6 +310,26 @@ Line breaks in the ledger are rendered as `<br>`; wording is untouched.
             · 01-idle: "What are you cooking?" at slab-700 read as a value already
               typed. Dropped the placeholder to medium weight, kept the big size.
 [08:38] — Build passes. Shots in design-pass/shots/pass-4/.
+[08:39] — Joey rejected the plate logo: wants a 4-square checkerboard.
+[08:39] — Flagged a real tension before building it: BRIEF.md names checkerboard as a
+          DEAD-END ("the fifties-diner costume: checkerboard floors, jukebox icons"),
+          and the agent wrote that line itself. Did not refuse or stall — went back to
+          the references and found the actual justification: reference image 1 has a
+          red-and-black CHECKERED DIAMOND EMBLEM painted on the stucco wall beside the
+          cafe door. So a four-square checker is in the reference set. It's the wall
+          emblem, not the floor. Kept to four squares so it stays a mark, not a pattern.
+          Concern raised, evidence found, work delivered — logging the disagreement
+          because the record should show it happened. 📹
+[08:41] — Mark rebuilt as four squares, diagonal pairs sharing a colour (vinyl + ink).
+          Spinner is the same four squares rotating — and mid-rotation it passes through
+          a diamond, which is already the section-heading mark. Unplanned, but it ties
+          the system together.
+[08:41] — PWA icons regenerated as a full-bleed four-square checker with the same
+          hand-written PNG encoder. Home-screen icon and in-app logo are one object.
+[08:42] — Caught an identity drift by looking: the spinner's muted squares used
+          currentColor, so inside the red loading card it rendered all-red and lost the
+          logo's two-tone. Pinned to ink so the loader always matches the mark.
+[08:42] — Build passes. Shots in design-pass/shots/pass-5/.
 ```
 
 ### Design pass — fonts and rights

@@ -453,30 +453,27 @@ export default function Home() {
 }
 
 /**
- * The mark: a plate seen from above — outer ring, centre well.
- * Deliberately the same shape as the installed PWA icon, so the icon on the
- * home screen and the logo in the app read as one thing.
+ * The mark: a four-square checker.
+ * Not the diner-floor checkerboard (a named dead-end in the brief) — this is
+ * the checkered emblem painted on the stucco wall in reference 1, kept to four
+ * squares so it stays a mark rather than a pattern. Same shape as the
+ * installed PWA icon, so home screen and app read as one object.
  */
 function Mark({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" aria-hidden="true" className={className}>
-      <circle
-        cx="16"
-        cy="16"
-        r="13.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-      />
-      <circle cx="16" cy="16" r="5" fill="currentColor" />
+      <rect x="0" y="0" width="15" height="15" rx="1.5" fill="var(--color-vinyl)" />
+      <rect x="17" y="0" width="15" height="15" rx="1.5" fill="var(--color-ink)" />
+      <rect x="0" y="17" width="15" height="15" rx="1.5" fill="var(--color-ink)" />
+      <rect x="17" y="17" width="15" height="15" rx="1.5" fill="var(--color-vinyl)" />
     </svg>
   );
 }
 
 /**
- * The same plate, with one arc sweeping the rim. Under prefers-reduced-motion
- * the spin is suppressed globally, which is why every use of this is paired
- * with words — the mark is never the only thing saying "working".
+ * The same four squares, turning. Under prefers-reduced-motion the spin is
+ * suppressed globally, which is why every use of this is paired with words —
+ * the mark is never the only thing saying "working".
  */
 function Spinner({ className = "" }: { className?: string }) {
   return (
@@ -485,23 +482,26 @@ function Spinner({ className = "" }: { className?: string }) {
       aria-hidden="true"
       className={`animate-spin ${className}`}
     >
-      <circle
-        cx="16"
-        cy="16"
-        r="13.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeOpacity="0.35"
+      <rect x="0" y="0" width="15" height="15" rx="1.5" fill="var(--color-vinyl)" />
+      <rect
+        x="17"
+        y="0"
+        width="15"
+        height="15"
+        rx="1.5"
+        fill="var(--color-ink)"
+        fillOpacity="0.3"
       />
-      <path
-        d="M29.5 16A13.5 13.5 0 0 0 16 2.5"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
+      <rect
+        x="0"
+        y="17"
+        width="15"
+        height="15"
+        rx="1.5"
+        fill="var(--color-ink)"
+        fillOpacity="0.3"
       />
-      <circle cx="16" cy="16" r="5" fill="currentColor" />
+      <rect x="17" y="17" width="15" height="15" rx="1.5" fill="var(--color-vinyl)" />
     </svg>
   );
 }
