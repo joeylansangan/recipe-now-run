@@ -240,7 +240,60 @@ Line breaks in the ledger are rendered as `<br>`; wording is untouched.
 [08:14] — STOPPED for the human pick, as the brief requires. Both shot sets consolidated
           on main: design-pass/shots/design-a and design-pass/shots/design-b.
           Reject-both is available and carries no penalty.
+[08:16] — PICK: Joey chose B — Diner Counter. Merged onto main.
+[08:17] — PASS 1. Defects read off the images, not the code:
+            · 01-idle: bottom 55% of the screen dead; the empty-state card was a
+              thin centred strip that read as an error notice — and that is the
+              FIRST screen a stranger sees.
+            · 13-history: mint header + tagline ate ~250px on every screen forever,
+              pushing the list below 620px; timestamps rendered in loud uppercase
+              WITH SECONDS ("7/27/2026, 5:00:00 AM"); "Clear history" floated
+              orphaned below the card it acts on.
+          Fixes: moved the search field INSIDE the mint wall so the wall earns its
+          height (it's the order window now, not a banner); rebuilt the empty state
+          with real weight in the menu voice; wrote a real timestamp formatter
+          ("Today, 5:00 AM"); moved Clear history inside its card.
+[08:19] — PASS 2. Read off pass-1 shots:
+            · 06-recipe-top: the SERVES/PREP/COOK strip had curved slivers bleeding
+              through all four rounded corners — a gap-px grid over a chrome
+              background clipped by overflow-hidden. A real rendering bug that only
+              a screenshot shows.
+            · 06-recipe-top: ingredient markers were mint rounded squares with a
+              border — i.e. unchecked checkboxes. They promised a tap that does
+              nothing. An affordance that lies.
+            · 01-idle: the red diamond sat ~24px above its text, reading as a stray dot.
+          Fixes: real borders instead of the clip trick; markers became list dashes;
+          diamond tied to its line.
+[08:22] — PASS 3. Read off pass-2 shots:
+            · 06-recipe-top: the unfavourited star was a hairline grey glyph on a
+              near-white circle — it read as DISABLED, and it's one of the five
+              frozen v1 features.
+            · 06-recipe-top: stat strip unbalanced — a lone "4" against "10 minutes"
+              and "45 minutes" twice.
+            · 13-history: "CLEAR HISTORY" rendered identically to the timestamps
+              beside it. The only destructive control in the app looked like metadata.
+          Fixes: star got ink weight and a 2px edge; times shortened to "10 min";
+          Clear history moved to the red event colour.
+[08:23] — AA verified with real numbers, not vibes — wrote a contrast checker over the
+          actual token values. 10 of 11 pairs passed. ONE REAL FAIL: the disabled
+          Search label at 3.19:1. WCAG exempts inactive controls, so I could have
+          claimed a pass. Fixed it anyway (now 4.79:1) — an unreadable label at arm's
+          length in a kitchen is a defect whatever the spec says. 📹
+[08:24] — Production build passes. 5 routes, TypeScript clean.
+[08:25] — PWA finished properly: manifest theme/background moved to the new palette
+          and both app icons regenerated in vinyl-red + cream with the same hand-rolled
+          PNG encoder from this morning. The installed icon now matches the app.
 ```
+
+### Design pass — fonts and rights
+
+| Item | Value |
+| :- | :- |
+| Display face | **Zilla Slab** — SIL Open Font License 1.1 |
+| Body face | **Karla** — SIL Open Font License 1.1 |
+| Delivery | `next/font/google`, self-hosted at build time (no runtime call to Google) |
+| Third-party marks in build | None. YouTube channel names shown are live API data, not authored branding. |
+| Reference art in build output | None. `design-pass/references/` is not imported by any app code. |
 
 ---
 
@@ -288,9 +341,15 @@ right now. The YouTube half is free until 100 searches a day." — do not use on
 
 | Field | Value |
 | :- | :- |
-| Before screenshot saved? | **PENDING — capture NOW, before any design work starts.** The plain version is live on localhost:3000 with a real loaded recipe on screen. Once the design pass runs, the "before" is gone. |
-| After screenshot saved? | PENDING |
-| What the design pass changed (1–2 lines) | PENDING — design pass has not started as of 05:00. |
+| Before screenshot saved? | **YES** — `design-pass/shots/before/`, 15 states at 390px, captured 08:05 before anything was touched. |
+| After screenshot saved? | **YES** — `design-pass/shots/pass-3/`, same 15 states. Also on disk: `design-a/`, `design-b/` (the two interpretations), `pass-1/`, `pass-2/`. |
+| What the design pass changed (1–2 lines) | Black-on-white default Tailwind became a mid-century diner counter: a mint "wall" holding the search field behind a chrome trim line, chrome-edged cards on cream, vinyl red as the event colour, slab-serif menu voice. Same features, same behaviour — every change was styling. |
+
+**Best thumbnail frame:** `design-pass/shots/pass-3/06-recipe-top.png` — the mint wall, the red Search pill,
+"Chicken Adobo" in slab, and the SERVES / PREP / COOK strip all in one clean 390px frame.
+
+**The honest before/after pair (same dish, same state, same viewport):**
+`shots/before/06-recipe-top.png` → `shots/pass-3/06-recipe-top.png`
 
 The plain v1 was built plain **on purpose** so this before/after is a real one, not a staged
 downgrade. What "before" looks like: black-and-white, default Tailwind, system fonts, a bordered

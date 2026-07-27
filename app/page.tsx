@@ -120,18 +120,22 @@ export default function Home() {
 
   return (
     <div className="mx-auto w-full max-w-[34rem]">
-      {/* The wall: mint field, chrome trim line, like a diner wainscot. */}
-      <header className="bg-mint px-5 pb-6 pt-9">
-        <h1 className="menu text-[2.35rem]">Recipe Now</h1>
-        <p className="mt-2 text-[1.0625rem] leading-snug text-ink-soft">
-          Type a dish. Get the recipe and the videos.
-        </p>
-      </header>
-      <div className="h-[6px] bg-chrome shadow-[inset_0_1px_0_#fff,inset_0_-1px_0_rgba(0,0,0,0.12)]" />
+      {/*
+        The wall: mint field with a chrome trim line, like a diner wainscot.
+        The search field lives INSIDE the wall — the wall is the order window,
+        not decoration. Pass 1: this replaced a mint band that carried only a
+        wordmark and a tagline and then ate 250px on every screen forever.
+      */}
+      <header className="bg-mint px-4 pb-5 pt-8">
+        <div className="px-1">
+          <h1 className="menu text-[2.1rem]">Recipe Now</h1>
+          <p className="mt-1.5 text-[0.9375rem] leading-snug text-ink-soft">
+            Type a dish. Get the recipe and the videos.
+          </p>
+        </div>
 
-      <div className="px-4">
         <form
-          className="pt-6"
+          className="pt-4"
           onSubmit={(e) => {
             e.preventDefault();
             search(query);
@@ -140,13 +144,15 @@ export default function Home() {
           <div className="chrome-edge flex items-center gap-2 rounded-full bg-card p-1.5">
             <input
               className="min-w-0 flex-1 bg-transparent px-4 py-2 text-[1.0625rem] outline-none placeholder:text-ink-faint"
-              placeholder="chicken adobo"
+              placeholder="Try chicken adobo"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               aria-label="Dish"
             />
             <button
-              className="label shrink-0 rounded-full bg-vinyl px-5 py-3 text-white disabled:bg-chrome disabled:text-ink-faint"
+              /* disabled text is ink-soft, not ink-faint: WCAG exempts
+                 inactive controls, but 3.19:1 is unreadable at arm's length. */
+              className="label shrink-0 rounded-full bg-vinyl px-5 py-3 text-white disabled:bg-chrome disabled:text-ink-soft"
               disabled={loading || !query.trim()}
               type="submit"
             >
@@ -154,7 +160,10 @@ export default function Home() {
             </button>
           </div>
         </form>
+      </header>
+      <div className="h-[6px] bg-chrome shadow-[inset_0_1px_0_#fff,inset_0_-1px_0_rgba(0,0,0,0.12)]" />
 
+      <div className="px-4">
         <nav className="chrome-edge mt-5 flex gap-1 rounded-full bg-card p-1.5">
           {TABS.map((name) => {
             const active = tab === name;
@@ -201,10 +210,13 @@ export default function Home() {
                   <div className="flex items-start justify-between gap-4">
                     <h2 className="menu flex-1 text-[1.95rem]">{recipe.dish}</h2>
                     <button
-                      className={`chrome-edge flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-lg ${
+                      /* Pass 3: unfavourited state was a hairline grey star on
+                         a near-white circle — it read as disabled, on one of
+                         the five core features. Now it has ink weight. */
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 text-xl ${
                         favorited
-                          ? "bg-vinyl text-white"
-                          : "bg-card text-ink-soft"
+                          ? "border-vinyl bg-vinyl text-white"
+                          : "border-ink bg-card text-ink"
                       }`}
                       onClick={toggleFavorite}
                       aria-pressed={favorited}
@@ -220,13 +232,21 @@ export default function Home() {
                     {recipe.summary}
                   </p>
 
-                  <dl className="mt-5 grid grid-cols-3 gap-px overflow-hidden rounded-lg bg-chrome">
+                  {/* Pass 2: was a gap-px grid over a chrome background, which
+                      bled curved slivers through the rounded clip at every
+                      corner. Real borders, no clipping, no artifacts. */}
+                  <dl className="mt-5 grid grid-cols-3 rounded-lg border border-chrome bg-card">
                     {[
+                      // Pass 3: "10 minutes" twice against a lone "4" made the
+                      // three cells read at wildly different weights.
                       ["Serves", recipe.servings.replace(/\s*servings?/i, "")],
-                      ["Prep", recipe.prepTime],
-                      ["Cook", recipe.cookTime],
+                      ["Prep", shorten(recipe.prepTime)],
+                      ["Cook", shorten(recipe.cookTime)],
                     ].map(([term, value]) => (
-                      <div key={term} className="bg-card px-2 py-3 text-center">
+                      <div
+                        key={term}
+                        className="border-l border-chrome px-2 py-3 text-center first:border-l-0"
+                      >
                         <dt className="label text-ink-faint">{term}</dt>
                         <dd className="menu mt-1 text-[1.05rem]">{value}</dd>
                       </div>
@@ -242,7 +262,10 @@ export default function Home() {
                         key={i}
                         className="flex gap-3 border-b border-chrome/70 py-2.5 text-[1.0625rem] leading-snug last:border-0"
                       >
-                        <span className="mt-[0.45rem] h-2.5 w-2.5 shrink-0 rounded-[3px] border border-chrome-dark bg-mint" />
+                        {/* Pass 2: was a mint rounded square with a border —
+                            an unchecked checkbox, promising a tap that does
+                            nothing. A list mark can't lie about that. */}
+                        <span className="mt-[0.85rem] h-[3px] w-3.5 shrink-0 bg-vinyl" />
                         {item}
                       </li>
                     ))}
@@ -339,10 +362,10 @@ export default function Home() {
                     {history.map((entry) => (
                       <li
                         key={entry.id}
-                        className="border-b border-chrome/70 last:border-0"
+                        className="border-b border-chrome/70"
                       >
                         <button
-                          className="flex min-h-11 w-full flex-col items-start justify-center py-2.5 text-left"
+                          className="flex min-h-11 w-full items-baseline justify-between gap-3 py-3 text-left"
                           onClick={() => {
                             setQuery(entry.dish);
                             search(entry.dish);
@@ -351,20 +374,25 @@ export default function Home() {
                           <span className="menu text-[1.15rem]">
                             {entry.dish}
                           </span>
-                          <span className="label mt-1 text-ink-faint">
-                            {new Date(entry.at).toLocaleString()}
+                          <span className="shrink-0 text-[0.8125rem] text-ink-faint">
+                            {formatWhen(entry.at)}
                           </span>
                         </button>
                       </li>
                     ))}
                   </ul>
+                  {/* Lives inside the card it acts on — it was floating
+                      orphaned underneath before pass 1. */}
+                  {/* Pass 3: was grey small-caps, identical to the timestamps
+                      beside it — the one destructive control in the app read
+                      as metadata. Red is the event colour; this is an event. */}
+                  <button
+                    className="label mt-3 min-h-11 text-vinyl"
+                    onClick={() => setHistory(clearHistory())}
+                  >
+                    Clear history
+                  </button>
                 </Card>
-                <button
-                  className="chrome-edge label mt-4 rounded-full bg-card px-5 py-3.5 text-ink-soft"
-                  onClick={() => setHistory(clearHistory())}
-                >
-                  Clear history
-                </button>
               </>
             )}
           </>
@@ -446,9 +474,35 @@ function Notice({ children }: { children: React.ReactNode }) {
 }
 
 function Empty({ children }: { children: React.ReactNode }) {
+  // Pass 1: was a short centred strip that read as a notice and left the
+  // bottom half of the screen dead. Now it has weight and a left edge to
+  // read from, and states its invitation in the menu voice.
   return (
-    <div className="chrome-edge rounded-[var(--radius-card)] bg-card px-5 py-8 text-center">
-      <p className="text-[1.0625rem] leading-snug text-ink-soft">{children}</p>
+    <div className="chrome-edge rounded-[var(--radius-card)] bg-card px-6 py-9">
+      {/* Pass 2: the diamond sat ~24px above the text and read as a stray
+          dot. Tied to the line it belongs to. */}
+      <p className="menu text-[1.45rem] leading-tight">
+        <span className="mr-2.5 inline-block h-2.5 w-2.5 rotate-45 bg-vinyl align-[0.15em]" />
+        {children}
+      </p>
     </div>
   );
+}
+
+/** "45 minutes" → "45 min", so the stat cells read at one glance. */
+function shorten(time: string) {
+  return time.replace(/\bminutes?\b/i, "min").replace(/\bhours?\b/i, "hr");
+}
+
+/** Short, human timestamps — the raw locale string carried seconds. */
+function formatWhen(at: number) {
+  const then = new Date(at);
+  const now = new Date();
+  const sameDay = then.toDateString() === now.toDateString();
+  const time = then.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  if (sameDay) return `Today, ${time}`;
+  return `${then.toLocaleDateString([], { month: "short", day: "numeric" })}, ${time}`;
 }
