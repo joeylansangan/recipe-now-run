@@ -283,6 +283,10 @@ Line breaks in the ledger are rendered as `<br>`; wording is untouched.
 [08:25] — PWA finished properly: manifest theme/background moved to the new palette
           and both app icons regenerated in vinyl-red + cream with the same hand-rolled
           PNG encoder from this morning. The installed icon now matches the app.
+[08:29] — Killed the dev server again at Joey's request; he's testing the designed
+          version manually. Port 3000 free, working tree clean, everything committed
+          on main. Same caveat as before: token counts now print in HIS terminal, so
+          Phase 5 stays stuck at 2 measured uses until those lines come back.
 ```
 
 ### Design pass — fonts and rights
