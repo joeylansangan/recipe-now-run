@@ -58,6 +58,18 @@ body {
     0 1px 0 rgba(33, 26, 21, 0.06);
 }
 
+/* The badge's diamond advancing a quarter-turn at a time — a wall clock
+   ticking, not a spinner spinning. steps() holds, then snaps. The global
+   reduced-motion rule below collapses it to the resting diamond. */
+.tick {
+  animation: tick 2.4s steps(8, end) infinite;
+}
+@keyframes tick {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -88,6 +88,7 @@ Machine at start: Node v20.18.1, npm 10.8.2, vercel CLI 57.0.0 already installed
 | 2 | 04:39 | `recording is on, start the clock.`<br><br>`this will be a recipe app. PWA made with nextjs deployed to vercel.`<br><br>`simple features:`<br>`- enter/search a dish`<br>`- AI returns the recipe`<br>`- the UI also returns youtube recipe videos of the dish `<br>`- there will be a history tab with timestamp`<br>`- add a dish to favorites button, and favorite section` | Clock started at 04:39. Phase 0 partially filled (one-liner, frozen v1 scope, framework + hosting). Phase 1 header filled. Still no code. |
 | 3 | 04:41 | _(not typed — answered a 3-option decision prompt from the agent)_ Chose: **Claude API — claude-sonnet-5**, **localStorage on-device**, **YouTube Data API v3** | Locked the three remaining stack decisions. Phase 0 stack table now complete. |
 | 4 | 04:46 | `-recipe-now is the name`<br>`-I cook a lot so I want a cooking related app`<br>`-Let me grab the keys`<br><br>`continue building` | **First build prompt.** Name + friction line filled in. Scaffolded the whole app: 2 API routes, search UI with history/favorites tabs, localStorage layer, PWA manifest, hand-generated PNG icons. Production build passed first try. |
+| 5 | 09:30 | `review the @BUILDLOG.md to catchup.`<br><br>`I switched to fable because maybe you can come up with a better logo than opus.`<br><br>`so review the app and the app's chosen design language, then create a logo + a matching loader` | Fourth mark: the "counter badge" — the app's own red diamond in the favorite star's ink ring. Ticking-diamond loader (steps(8), snaps like a clock). New PWA icons + a real favicon.ico. Shots in pass-7. Header placement later toggled off in Joey's tree, pending his verdict. |
 | _(add rows as you go)_ | | | |
 
 Line breaks in the ledger are rendered as `<br>`; wording is untouched.
@@ -398,6 +399,62 @@ Line breaks in the ledger are rendered as `<br>`; wording is untouched.
           The sun-mark round had replaced it with a real one. It is a browser-tab
           icon only — it does not affect the app or the PWA install — but it is
           wrong, and the ASSET_SPEC round is the only thing that ever fixed it.
+[09:30] — MODEL SWITCH, logged as an event: Joey moved the session from Opus to
+          Fable 5 specifically for the logo. His words: "I switched to fable
+          because maybe you can come up with a better logo than opus." Fourth
+          attempt at the mark begins. Port 3000 free — Joey's manual-test server
+          is down, so no risk of breaking a live session this time.
+[09:31] — Re-read BRIEF.md, app/page.tsx, globals.css, the pass-3 shots and the
+          references before proposing anything. The read on why three marks died:
+          plate, checker and sun were all NEW objects imported into a design that
+          already has a signature. Pass-3 already owns two shapes: the red diamond
+          (opens every section heading and both empty states) and the 2px ink-ringed
+          circle (the favorite star button, the step numerals). "Matches" means
+          composed from those, not invented beside them.
+[09:32] — DECISION — the mark is the COUNTER BADGE: the app's red diamond set in
+          its own ink-ringed circle. Zero new shapes, zero new colors; the logo is
+          the interface's existing punctuation promoted to a badge. Reference
+          anchor: the enamel diamond emblem painted on the stucco wall in
+          reference 1 (the solid emblem, NOT the checkerboard — that distinction
+          killed attempt #2). Loader: the SAME badge with the diamond ticking a
+          quarter-turn at a time on a steps() animation — snaps like a wall-clock
+          second hand, never spins. Recipe NOW: the tick is the promise. Under
+          reduced motion the global rule freezes it as the plain diamond — a
+          correct still, not a half-frame. 📹
+[09:35] — Built it. <Mark> (ringed badge, optional ticking) and <Tick> (bare
+          ticking diamond) in page.tsx; .tick keyframes in globals.css —
+          2.4s steps(8), one 45° snap every 300ms. Four placements: header
+          lockup beside the wordmark, the "Getting the recipe…" card, inside
+          the Search pill, and before "Loading videos…". Two earlier lessons
+          applied without being re-learned: the pill keeps its exact size while
+          loading (the invisible Search label holds the layout — the pass-6
+          jump), and the tick is pinned to vinyl, never currentColor (the
+          pass-5 identity drift).
+[09:38] — Icon family regenerated as the badge with the same hand-rolled PNG
+          encoder, upgraded to RGBA: icon-192, icon-512, and a REAL
+          app/favicon.ico at 16/32/48 — the known defect logged at 09:04 is
+          fixed. The 08:53 lesson pre-applied: ICO entries written RGBA from
+          the start, so no crash this time. At 16/32px the ring turns to noise,
+          so favicon sizes carry the diamond alone, drawn larger.
+[09:40] — Build passes. Started a dev server (port was free), shot all 15
+          states → design-pass/shots/pass-7/, and LOOKED at them. The badge and
+          the favorite star read as one family — same ring, same ink — and the
+          header diamond rhymes with every section heading below it. The pill
+          holds its width on submit; verified against 01-idle.
+[09:52] — Shot 05 never scrolls far enough to show the videos-loading line, so
+          it was captured separately (16-videos-loading-tick). Defect OBSERVED
+          there and accepted with reasons, not fixed: a still frame catches the
+          bare tick mid-turn as a SQUARE under the VIDEOS heading's diamond, so
+          in a screenshot it reads as an off-model bullet. In motion it ticks
+          every 300ms and reads as the mark turning; under reduced motion it
+          rests as the diamond. The square frame is the animation, not a bug.
+[09:55] — EVENT, recorded plainly: while the shots were being taken, the header
+          <Mark> line in page.tsx was commented out in Joey's working tree —
+          the fourth mark is under live evaluation, with the header placement
+          currently toggled OFF and the loaders/icons still carrying it. The
+          pass-7 shots show the badge in the header; the running code right now
+          does not. Nothing committed — committing mid-evaluation would bake a
+          toggle still being decided into the record.
 ```
 
 ### What was deliberately NOT adopted from ASSET_SPEC.md

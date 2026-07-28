@@ -1,9 +1,14 @@
-// Minimal PNG writer — no image deps. Draws the app icon at two sizes.
+// Minimal PNG/ICO writer — no image deps. Draws the counter badge:
+// the app's red diamond inside an ink ring on the card white, the same
+// object as the in-app <Mark>. Emits icon-192/512 for the PWA and a
+// real favicon.ico (16/32/48). ICO entries must be RGBA — Next.js's ICO
+// decoder rejects RGB PNGs ("The PNG is not in RGBA format!").
 import { deflateSync } from "node:zlib";
 import { writeFileSync } from "node:fs";
 
-const BG = [179, 32, 43];
-const FG = [246, 240, 228];
+const CARD = [255, 253, 248];
+const INK = [33, 26, 21];
+const VINYL = [179, 32, 43];
 
 function crc32(buf) {
   let c,
@@ -28,24 +33,29 @@ function chunk(type, data) {
 }
 
 function png(size) {
-  const raw = Buffer.alloc(size * (size * 3 + 1));
+  const raw = Buffer.alloc(size * (size * 4 + 1));
   const c = (size - 1) / 2;
-  // Plate: an outer ring and a filled centre — reads as a plate at 48px.
-  const outer = size * 0.36;
-  const inner = size * 0.3;
-  const dot = size * 0.16;
+  // Badge geometry, scaled from the in-app mark (h-12 ring, h-[1.15rem]
+  // gem). Below 48px the ring turns to noise, so the favicon sizes get
+  // the diamond alone, drawn larger.
+  const withRing = size >= 48;
+  const ringOuter = size * 0.42;
+  const ringInner = ringOuter - Math.max(2, size * 0.045);
+  const gem = withRing ? size * 0.21 : size * 0.34; // half-diagonal
 
   for (let y = 0; y < size; y++) {
-    const row = y * (size * 3 + 1);
+    const row = y * (size * 4 + 1);
     raw[row] = 0; // filter byte
     for (let x = 0; x < size; x++) {
       const d = Math.hypot(x - c, y - c);
-      const on = (d <= outer && d >= inner) || d <= dot;
-      const [r, g, b] = on ? FG : BG;
-      const i = row + 1 + x * 3;
+      const diamond = Math.abs(x - c) + Math.abs(y - c) <= gem;
+      const ring = withRing && d <= ringOuter && d >= ringInner;
+      const [r, g, b] = diamond ? VINYL : ring ? INK : CARD;
+      const i = row + 1 + x * 4;
       raw[i] = r;
       raw[i + 1] = g;
       raw[i + 2] = b;
+      raw[i + 3] = 255;
     }
   }
 
@@ -53,7 +63,7 @@ function png(size) {
   ihdr.writeUInt32BE(size, 0);
   ihdr.writeUInt32BE(size, 4);
   ihdr[8] = 8; // bit depth
-  ihdr[9] = 2; // colour type: truecolour
+  ihdr[9] = 6; // colour type: truecolour + alpha
   return Buffer.concat([
     Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
     chunk("IHDR", ihdr),
@@ -62,8 +72,30 @@ function png(size) {
   ]);
 }
 
-const out = process.argv[2];
-for (const size of [192, 512]) {
-  writeFileSync(`${out}/icon-${size}.png`, png(size));
-  console.log(`wrote icon-${size}.png`);
+function ico(sizes) {
+  const images = sizes.map(png);
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(1, 2); // type: icon
+  header.writeUInt16LE(sizes.length, 4);
+  const entries = [];
+  let offset = 6 + 16 * sizes.length;
+  for (let i = 0; i < sizes.length; i++) {
+    const e = Buffer.alloc(16);
+    e[0] = sizes[i] % 256; // 0 means 256
+    e[1] = sizes[i] % 256;
+    e.writeUInt16LE(1, 4); // planes
+    e.writeUInt16LE(32, 6); // bits per pixel
+    e.writeUInt32LE(images[i].length, 8);
+    e.writeUInt32LE(offset, 12);
+    offset += images[i].length;
+    entries.push(e);
+  }
+  return Buffer.concat([header, ...entries, ...images]);
 }
+
+for (const size of [192, 512]) {
+  writeFileSync(`public/icon-${size}.png`, png(size));
+  console.log(`wrote public/icon-${size}.png`);
+}
+writeFileSync("app/favicon.ico", ico([16, 32, 48]));
+console.log("wrote app/favicon.ico");

@@ -127,13 +127,19 @@ export default function Home() {
         wordmark and a tagline and then ate 250px on every screen forever.
       */}
       <header className="bg-mint px-4 pb-5 pt-8">
-        <div className="px-1">
-          <h1 className="menu text-[2.1rem]">Recipe Now</h1>
-          <p className="mt-1.5 text-[0.9375rem] leading-snug text-ink-soft">
-            Type a dish. Get the recipe and the videos.
-          </p>
+        <div className="flex items-center gap-3.5 px-1">
+          {/* The badge is built from shapes the interface already owns: the
+              red diamond that opens every heading, inside the ink-ringed
+              circle the favorite star already uses. Nothing imported. */}
+          <Mark badge="h-2 w-2" gem="h-4 w-4" />
+            <h1 className="menu text-[2.1rem]">Recipe Now</h1>
         </div>
+          <div>
 
+            <p className="mt-1.5 text-[2rem] italic font-light leading-snug text-ink-soft">
+              What are you cooking?
+            </p>
+          </div>
         <form
           className="pt-4"
           onSubmit={(e) => {
@@ -152,11 +158,18 @@ export default function Home() {
             <button
               /* disabled text is ink-soft, not ink-faint: WCAG exempts
                  inactive controls, but 3.19:1 is unreadable at arm's length. */
-              className="label shrink-0 rounded-full bg-vinyl px-5 py-3 text-white disabled:bg-chrome disabled:text-ink-soft"
+              className="label relative shrink-0 rounded-full bg-vinyl px-5 py-3 text-white disabled:bg-chrome disabled:text-ink-soft"
               disabled={loading || !query.trim()}
               type="submit"
             >
-              {loading ? "…" : "Search"}
+              {/* The label stays in the layout invisibly while loading, so
+                  the pill never changes size on submit. */}
+              <span className={loading ? "invisible" : undefined}>Search</span>
+              {loading && (
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <Tick />
+                </span>
+              )}
             </button>
           </div>
         </form>
@@ -200,7 +213,10 @@ export default function Home() {
 
             {loading && (
               <Card>
-                <p className="label text-ink-soft">Getting the recipe…</p>
+                <div className="flex items-center gap-3">
+                  <Mark badge="h-9 w-9" gem="h-3.5 w-3.5" ticking />
+                  <p className="label text-ink-soft">Getting the recipe…</p>
+                </div>
               </Card>
             )}
 
@@ -312,7 +328,10 @@ export default function Home() {
                     </p>
                   )}
                   {!videoError && videos.length === 0 && (
-                    <p className="label mt-3 text-ink-soft">Loading videos…</p>
+                    <p className="label mt-3 flex items-center gap-2.5 text-ink-soft">
+                      <Tick />
+                      Loading videos…
+                    </p>
                   )}
                   <ul className="mt-2">
                     {videos.map((video) => (
@@ -451,6 +470,41 @@ function Card({
     >
       {children}
     </section>
+  );
+}
+
+/* The counter badge — the app's red diamond inside the same 2px ink ring
+   the favorite star wears. Logo, loader and PWA icon are this one object.
+   With `ticking` the diamond advances in quarter-turn snaps; the loader is
+   never the only thing saying "working" — words always sit beside it. */
+function Mark({
+  badge,
+  gem,
+  ticking = false,
+}: {
+  badge: string;
+  gem: string;
+  ticking?: boolean;
+}) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`flex shrink-0 items-center justify-center rounded-full border-2 border-ink bg-card ${badge}`}
+    >
+      <span className={ticking ? "tick block" : "block"}>
+        <span className={`block rotate-45 bg-vinyl ${gem}`} />
+      </span>
+    </span>
+  );
+}
+
+/* The bare ticking diamond, for tight spots like the Search pill. Pinned
+   to vinyl, never currentColor — the loader must always match the mark. */
+function Tick() {
+  return (
+    <span aria-hidden="true" className="tick block">
+      <span className="block h-2.5 w-2.5 rotate-45 bg-vinyl" />
+    </span>
   );
 }
 
