@@ -89,6 +89,7 @@ Machine at start: Node v20.18.1, npm 10.8.2, vercel CLI 57.0.0 already installed
 | 3 | 04:41 | _(not typed — answered a 3-option decision prompt from the agent)_ Chose: **Claude API — claude-sonnet-5**, **localStorage on-device**, **YouTube Data API v3** | Locked the three remaining stack decisions. Phase 0 stack table now complete. |
 | 4 | 04:46 | `-recipe-now is the name`<br>`-I cook a lot so I want a cooking related app`<br>`-Let me grab the keys`<br><br>`continue building` | **First build prompt.** Name + friction line filled in. Scaffolded the whole app: 2 API routes, search UI with history/favorites tabs, localStorage layer, PWA manifest, hand-generated PNG icons. Production build passed first try. |
 | 5 | 09:30 | `review the @BUILDLOG.md to catchup.`<br><br>`I switched to fable because maybe you can come up with a better logo than opus.`<br><br>`so review the app and the app's chosen design language, then create a logo + a matching loader` | Fourth mark: the "counter badge" — the app's own red diamond in the favorite star's ink ring. Ticking-diamond loader (steps(8), snaps like a clock). New PWA icons + a real favicon.ico. Shots in pass-7. Header placement later toggled off in Joey's tree, pending his verdict. |
+| 6 | 20:34 | `pushed updates along with manual style corrections to main` | No code from the agent. Verified commit e753374 (badge round + Joey's header corrections), screenshotted the corrected header, logged the verdict: mark #4 accepted with corrections. |
 | _(add rows as you go)_ | | | |
 
 Line breaks in the ledger are rendered as `<br>`; wording is untouched.
@@ -455,6 +456,35 @@ Line breaks in the ledger are rendered as `<br>`; wording is untouched.
           pass-7 shots show the badge in the header; the running code right now
           does not. Nothing committed — committing mid-evaluation would bake a
           toggle still being decided into the record.
+[09:55–
+ 20:33] — GAP. ~10.5h of wall clock with no build work. Recorded so "total
+          honest minutes" doesn't silently absorb it, same as the morning gap.
+[20:33] — Joey pushed commit e753374 "style/asset update" to main: the whole
+          counter-badge round (components, loaders, icons, real favicon, pass-7
+          shots) PLUS his own manual corrections to the header. VERDICT: the
+          fourth mark is the first to survive — accepted with corrections, not
+          rejected. What his corrections actually did, read from the diff and
+          then VERIFIED by screenshot (17-joey-header-corrections.png):
+            · Header mark sized to badge h-2 / gem h-4 — the 16px diamond fully
+              covers the 8px ring, so the header logo renders as the BARE RED
+              DIAMOND, no ring. The ring still exists underneath, hidden by
+              geometry. The header now opens "◆ Recipe Now" — the exact same
+              pattern as the empty-state line "◆ Nothing yet…" below it.
+            · "What are you cooking?" is back — his 08:31 ask that the 09:00
+              revert had swept away — as a 2rem italic greeting line under the
+              wordmark, replacing the old tagline. Ink-soft on mint ≈ 5.07:1,
+              passes AA for large text.
+            · Everything else (ticking loaders, pill min-width fix, icons,
+              favicon) taken as delivered. The favicon defect from 09:04 is
+              fixed ON MAIN now.
+[20:36] — Honest note on the accepted state, logged not "fixed": the header
+          shows the bare diamond while the loading card and the PWA/home-screen
+          icons still wear the ringed badge — a deliberate-looking split (inline
+          mark = diamond, standalone mark = ringed badge) but it was Joey's
+          hand, not a documented decision. Also the hidden-ring trick
+          (gem larger than badge) works but is invisible in the code's intent;
+          if the ring is never wanted inline, Mark could take a ringless
+          variant. Leaving both exactly as pushed — they're his corrections.
 ```
 
 ### What was deliberately NOT adopted from ASSET_SPEC.md
